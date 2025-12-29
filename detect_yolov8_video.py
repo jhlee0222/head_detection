@@ -24,7 +24,7 @@ def face_detection(model, video_path, frame_skip=1, save_dir=None, min_detection
         per_video_save_dir = os.path.join(save_dir, base)
         os.makedirs(per_video_save_dir, exist_ok=True)
 
-        print(f"Processing video: {file_name} -> {per_video_save_dir}")
+        print(f"Processing video: {file_name}...")
         frame_count = 0
         saved_count = 0
 
