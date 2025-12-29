@@ -21,8 +21,6 @@ def face_detection(model, video_path, frame_skip=1, save_dir=None, min_detection
             continue
 
         base = os.path.splitext(file_name)[0]
-        per_video_save_dir = os.path.join(save_dir, base)
-        os.makedirs(per_video_save_dir, exist_ok=True)
 
         print(f"Processing video: {file_name}...")
         frame_count = 0
@@ -58,7 +56,9 @@ def face_detection(model, video_path, frame_skip=1, save_dir=None, min_detection
                     crop = frame_bgr[y1:y2, x1:x2]
                     if crop.size == 0: continue
                     save_name = f"{base}_frame{frame_count}_face{i}.png"
-                    save_path = os.path.join(per_video_save_dir, save_name)
+                    img_saved_path = os.path.join(save_dir, base)
+                    os.makedirs(img_saved_path, exist_ok=True)
+                    save_path = os.path.join(img_saved_path, save_name)
                     ok = cv2.imwrite(save_path, crop)
                     if not ok:
                         print(f"[Error] cv2.imwrite failed: {save_path}")
