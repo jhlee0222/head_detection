@@ -74,4 +74,4 @@ if __name__ == "__main__":
     video_path = "video"
     model_path = hf_hub_download(repo_id="arnabdhar/YOLOv8-Face-Detection",filename="model.pt")
     model = YOLO(model_path)
-    face_detection(model, video_path, frame_skip=1, min_detection_confidence=0.5)
+    face_detection(model, video_path, frame_skip=15, min_detection_confidence=0.5)
