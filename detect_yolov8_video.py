@@ -7,7 +7,7 @@ import os
 
 def face_detection(model, video_path, frame_skip=1, save_dir=None, min_detection_confidence=0.5):
     if save_dir is None:
-        save_dir = os.path.join(video_path, "crops")
+        save_dir = os.path.join(video_path, "crops_yolov8")
     os.makedirs(save_dir, exist_ok=True)
 
     for file_name in os.listdir(video_path):
