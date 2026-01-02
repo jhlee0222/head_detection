@@ -18,10 +18,10 @@ Supported inputs:
 ```
 ├── detect_mp_image.py # MediaPipe - image face detection
 ├── detect_mp_video.py # MediaPipe - video face detection
-├── detect_rf_image.py # RetinaFace - image face detection (optional)
-├── detect_rf_video.py # RetinaFace - video face detection (optional)
-├── detect_yolo_image.py # YOLOv8 - image face detection (optional)
-├── detect_yolo_video.py # YOLOv8 - video face detection (optional)
+├── detect_retinaface_image.py # RetinaFace - image face detection (optional)
+├── detect_retinaface_video.py # RetinaFace - video face detection (optional)
+├── detect_yolov8_image.py # YOLOv8 - image face detection (optional)
+├── detect_yolov8_video.py # YOLOv8 - video face detection (optional)
 └── README.md
 ```
 
