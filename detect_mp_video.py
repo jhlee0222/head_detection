@@ -2,11 +2,21 @@ import mediapipe as mp
 import cv2
 import os
 
-def face_detection(video_path, frame_skip=15, min_confidence=0.5):
+def face_detection(video_path: str, frame_skip: int = 15, min_confidence: float = 0.5, model_selection: int = 1):
+    """ Detect face for videos
+    
+    Args:
+        video_path(str): the path of the folder that contains videos
+        frame_skip(int): decide the interval of frames to detect faces
+        min_confidence(float): min detection confidence
+        model_selection (int): face detection model selection
+            0: short-range model (better for faces within ~2m)
+            1: full-range model (better for faces within ~5m)
+    """
     mp_face_detection = mp.solutions.face_detection
     mp_drawing = mp.solutions.drawing_utils
     face_detection = mp_face_detection.FaceDetection(
-        model_selection=1,
+        model_selection=model_selection,
         min_detection_confidence=min_confidence
     )
 
@@ -34,17 +44,24 @@ def face_detection(video_path, frame_skip=15, min_confidence=0.5):
                 if results.detections:
                     for i, detection in enumerate(results.detections):
                         bbox = detection.location_data.relative_bounding_box
-                        x, y, w, h = int(bbox.xmin * image.shape[1]), int(bbox.ymin * image.shape[0]), int(bbox.width * image.shape[1]), int(bbox.height * image.shape[0])
-                        x, y, w, h = max(0, x), max(0, y), min(image.shape[1] - x, w), min(image.shape[0] - y, h)
-                        if w > 0 and h > 0:
-                            cropped_image = image[y:y+h, x:x+w]
-                            file_base = os.path.splitext(file_name)[0]
-                            save_name = f"{file_base}_frame{frame_count}_face{i}.png"
-                            save_path = os.path.join(crops_dir, save_name)
-                            cv2.imwrite(save_path, cropped_image)
-                            saved_count += 1
-                            # print(f"Saved {save_name}")
+                        h, w = image.shape[:2]
+                        x1, y1, x2, y2 = int(bbox.xmin * w), int(bbox.ymin * h), int((bbox.xmin + bbox.width) * w), int((bbox.ymin + bbox.height) * h)
+                        x1, y1, x2, y2 = max(0, min(w, x1)), max(0, min(h, y1)), max(0, min(w, x2)), max(0, min(h, y2))
+                        if x2 <= x1 or y2 <= y1:
+                            print("[Warn] Invalid bbox")
+                            continue
+                        cropped_image = image[y1:y2, x1:x2]
+                        if cropped_image is None or cropped_image.size == 0:
+                            print("[Warn] Empty Error")
+                            continue
+                        file_base = os.path.splitext(file_name)[0]
+                        save_name = f"{file_base}_frame{frame_count}_face{i}.png"
+                        save_path = os.path.join(crops_dir, save_name)
+                        cv2.imwrite(save_path, cropped_image)
+                        saved_count += 1
+                        # print(f"Saved {save_name}")
             cap.release() 
             print(f"Done: {file_name}, Saved: {saved_count}")
+            
 if __name__=="__main__":
-    face_detection("video", frame_skip=15, min_confidence=0.5)
+    face_detection("video", frame_skip=15, min_confidence=0.5, model_selection=1)   # folder name: video

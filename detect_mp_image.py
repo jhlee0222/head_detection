@@ -2,11 +2,20 @@ import mediapipe as mp
 import cv2
 import os
 
-def face_detection(image_path, min_confidence=0.5):
+def face_detection(image_path: str, min_confidence: float = 0.5, model_selection: int = 1):
+    """ Detect face for images
+    
+    Args:
+        image_path(str): the path of the folder that contains images
+        min_confidence(float): min detection confidence
+        model_selection (int): face detection model selection
+            0: short-range model (better for faces within ~2m)
+            1: full-range model (better for faces within ~5m)
+    """
     mp_face_detection = mp.solutions.face_detection
     mp_drawing = mp.solutions.drawing_utils
     face_detection = mp_face_detection.FaceDetection(
-        model_selection=1,
+        model_selection=model_selection,
         min_detection_confidence=min_confidence
     )
     cropped_dir = os.path.join(image_path, "cropped_img_mp")
@@ -48,4 +57,4 @@ def face_detection(image_path, min_confidence=0.5):
                 print(f"No faces found in {file_name}")
                 
 if __name__=="__main__":
-    face_detection("img", min_confidence=0.5)       # folder name: img
+    face_detection("img", min_confidence=0.5, model_selection=1)       # folder name: img
