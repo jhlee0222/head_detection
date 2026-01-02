@@ -1,14 +1,17 @@
-import mediapipe as mp
+import mediapipe as mp 
 import cv2
 import os
 
-def face_detection(video_path):
+def face_detection(video_path, frame_skip=15, min_confidence=0.5):
     mp_face_detection = mp.solutions.face_detection
     mp_drawing = mp.solutions.drawing_utils
     face_detection = mp_face_detection.FaceDetection(
         model_selection=1,
-        min_detection_confidence=0.99
+        min_detection_confidence=min_confidence
     )
+
+    crops_dir = os.path.join(video_path, "crops_mp")
+    os.makedirs(crops_dir, exist_ok=True)
     
     for file_name in os.listdir(video_path):
         if file_name.lower().endswith(('.mp4', '.avi', '.mov', '.mkv')):
@@ -19,7 +22,7 @@ def face_detection(video_path):
                 continue
             print(f"Processing video: {file_name}...")
             frame_count = 0
-            frame_skip = 1  
+            saved_count = 0
             while True:
                 success, image = cap.read()
                 if not success: break
@@ -37,10 +40,11 @@ def face_detection(video_path):
                             cropped_image = image[y:y+h, x:x+w]
                             file_base = os.path.splitext(file_name)[0]
                             save_name = f"{file_base}_frame{frame_count}_face{i}.png"
-                            save_path = os.path.join(video_path, save_name)
+                            save_path = os.path.join(crops_dir, save_name)
                             cv2.imwrite(save_path, cropped_image)
+                            saved_count += 1
                             # print(f"Saved {save_name}")
             cap.release() 
-
+            print(f"Done: {file_name}, Saved: {saved_count}")
 if __name__=="__main__":
-    face_detection("video") 
+    face_detection("video", frame_skip=15, min_confidence=0.5)
