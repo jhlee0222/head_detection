@@ -1,7 +1,7 @@
 # Head Detection
 
 ## Overview
-This repository uses **three detection methods** in Python:
+This repository uses **three detection methods** to detect head in Python:
 - **MediaPipe** (recommended): fast and easy to run
 - **RetinaFace**: strong accuracy but slow
 - **YOLOv8**: fast and normal accuracy
