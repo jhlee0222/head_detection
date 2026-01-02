@@ -1,7 +1,7 @@
-# Face Detection (Head Detection)
+# Head Detection
 
 ## Overview
-This repository uses **three face detection methods** in Python:
+This repository uses **three detection methods** in Python:
 - **MediaPipe** (recommended): fast and easy to run
 - **RetinaFace**: strong accuracy but slow
 - **YOLOv8**: fast and normal accuracy
@@ -10,7 +10,7 @@ Supported inputs:
 - Images
 - Videos
 
-> If you want to run face detection quickly, start with **MediaPipe**.
+> If you want to run quickly, start with **MediaPipe**.
 
 ---
 
@@ -39,7 +39,7 @@ python -m pip install mediapipe==0.10.21
 # 3. Check installation (0.10.21, has solutions: True)
 python -c "import mediapipe as mp; print(mp.__version__); print('has solutions:', hasattr(mp,'solutions'))"
 
-# 3. Run
+# 4. Run
 python detect_mp_image.py
 
 python detect_mp_video.py
